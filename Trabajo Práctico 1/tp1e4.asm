@@ -12,6 +12,7 @@ finmsj2 DB ?
 
 num1 DB ?
 num2 DB ?
+resultado DB ?
 
 ORG 3000H
 
@@ -29,6 +30,14 @@ INT 7
 MOV BX, OFFSET num2;
 INT 6
 
+MOV DL, num1;
+ADD DL, num2;
+SUB DL, 30h;
+
+MOV BX, OFFSET resultado
+MOV [BX], DL
+
+MOV AL, 1
 INT 7;
 
 INT 0
