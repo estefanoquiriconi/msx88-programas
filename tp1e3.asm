@@ -1,3 +1,5 @@
+; 3. Escribir un programa que solicite el ingreso de un número por teclado e inmediatamente lo muestre
+; en la pantalla de comandos, haciendo uso de las interrupciones por software INT 6 e INT 7.
 
 ORG 1000H
 
