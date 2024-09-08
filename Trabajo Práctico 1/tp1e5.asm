@@ -19,9 +19,9 @@ LOOP:
       CMP caracter, 48          ; Comparar `caracter` con 48 ('0' en ASCII).
       JS IMPRIMIR               ; Si el valor es menor que 48, no es un dígito, saltar a `IMPRIMIR`.
 
-      MOV AH, 57                ; Mover 57 ('9' en ASCII) a AH. CMP no soporta que su primer operando sea inmediato.
+      MOV AH, 57                ; Mover 57 ('9' en ASCII) a AH. Esto se hace porque CMP no soporta que su primer operando sea inmediato.
       CMP AH, caracter          ; Comparar AH (57) con `caracter`.
-      JS IMPRIMIR               ; Si `caracter` es mayor a 57, no es un dígito, saltar a `IMPRIMIR`.
+      JS IMPRIMIR               ; Si `caracter` es menor o igual a 57, es un dígito, saltar a `IMPRIMIR`.
 
       ; Si el carácter es un dígito, se reemplaza por '#'.
       MOV caracter, 35          ; Mover el valor ASCII de '#' (35) a `caracter`.
