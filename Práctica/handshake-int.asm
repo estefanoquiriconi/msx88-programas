@@ -1,0 +1,47 @@
+EOI EQU 20h
+IMR EQU 21h
+INT2 EQU 26h
+HAND_MASK EQU 11111011b;
+HAND_DATO EQU 40h
+HAND_ESTADO EQU 41h
+
+ID_HAND EQU 10
+
+ORG 40
+DW IMPRIMIR
+
+ORG 1000H
+mensaje DB "HANDSHAKE"
+finmsj DB ?
+
+ORG 3000H
+IMPRIMIR: 
+  MOV AL, [BX]
+  OUT HAND_DATO, AL
+  INC BX
+  MOV AL, 20h
+  OUT EOI, AL
+IRET
+  
+ORG 2000H
+; Configuración del PIC
+CLI
+MOV AL, HAND_MASK
+OUT IMR, AL
+
+MOV AL, ID_HAND
+OUT INT2, AL
+STI
+
+MOV BX, OFFSET mensaje
+
+; Configiración del handshake para interrupciones
+IN AL, HAND_ESTADO; Estado actual
+OR AL, 80H; 80H = 1000 0000
+OUT HAND_ESTADO, AL ; Estado = 1xxx xxxx
+
+POLL: CMP BX, OFFSET finmsj; Check fin
+      JNZ POLL
+      
+INT 0
+END
