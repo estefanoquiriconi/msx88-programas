@@ -1,0 +1,41 @@
+ORG 1000h
+msj DB "Ingresar valor: "
+finmsj DB ?
+msj2 DB "Letras del abecedario: "
+DB 0Ah
+finmsj2 DB ?
+N DW ?
+SALTO DB 0AH
+LETRA DB 41h
+
+ORG 2000H
+MOV BX, OFFSET msj
+MOV AL, OFFSET finmsj - OFFSET msj
+INT 7
+
+MOV BX, OFFSET N
+INT 6
+
+MOV CX, N
+MOV AL, 1
+INT 7
+SUB CX, 30h
+
+MOV BX, OFFSET SALTO
+MOV AL, 1
+INT 7
+
+MOV BX, OFFSET msj2
+MOV AL, OFFSET finmsj2 - OFFSET msj2
+INT 7
+
+MOV BX, OFFSET LETRA
+MOV AL, 1
+LOOP: INT 7
+      INC LETRA
+      DEC CX
+      CMP CX, 0
+JNZ LOOP
+
+INT 0
+END

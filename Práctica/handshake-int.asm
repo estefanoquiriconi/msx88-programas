@@ -11,17 +11,32 @@ ORG 40
 DW IMPRIMIR
 
 ORG 1000H
-mensaje DB "HANDSHAKE"
+mensaje DB "HOLA"
 finmsj DB ?
 
 ORG 3000H
 IMPRIMIR: 
+  CMP BX, OFFSET finmsj
+  JZ FIN
+  
   MOV AL, [BX]
   OUT HAND_DATO, AL
   INC BX
   MOV AL, 20h
   OUT EOI, AL
-IRET
+  IRET
+  
+  FIN: CALL DESACTIVAR_HAND
+  MOV AL, 20h
+  OUT EOI, AL
+  IRET
+
+ORG 3500H
+DESACTIVAR_HAND:  
+       IN AL, HAND_ESTADO
+       AND AL, 7FH
+       OUT HAND_ESTADO, AL
+       RET
   
 ORG 2000H
 ; Configuración del PIC
@@ -40,8 +55,7 @@ IN AL, HAND_ESTADO; Estado actual
 OR AL, 80H; 80H = 1000 0000
 OUT HAND_ESTADO, AL ; Estado = 1xxx xxxx
 
-POLL: CMP BX, OFFSET finmsj; Check fin
-      JNZ POLL
+LOOP: JMP LOOP
       
 INT 0
 END
